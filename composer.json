@@ -1,18 +1,22 @@
 {
-  "name": "tecg-dcs-2024-2025/screencast",
+  "name": "schmitz-eline/screencast",
   "description": "A small project dedicated to learning server development using PHP",
   "type": "project",
   "license": "MIT",
   "autoload": {
     "psr-4": {
-      "Tecgdcs\\": "core/"
+      "Tecgdcs\\": "core/",
+      "Animal\\": "app/"
     }
   },
   "authors": [
     {
-      "name": "Dominique Vilain",
-      "email": "dominique.vilain@hepl.be"
+      "name": "Eline Schmitz",
+      "email": "eline.schmitz@student.hepl.be"
     }
   ],
-  "require": {}
+  "require": {
+    "php": "8.3",
+    "laravel/pint": "^v1.21.2"
+  }
 }
