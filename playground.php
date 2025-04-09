@@ -3,9 +3,11 @@
 /**
  * Un bac à sable pour tester le fonctionnement de certaines fonctions PHP
  */
-function div($nb1, $nb2)
-{
-    return $nb1 / $nb2;
-}
 
-echo div(nb2: 4, nb1: 8);
+require __DIR__.'/vendor/autoload.php';
+require __DIR__.'/core/helpers/functions.php';
+define('DATABASE_PATH', __DIR__.'/database.sqlite');
+require __DIR__.'/core/database/dbconnection.php';
+
+$p = \Animal\Models\Loss::first();
+echo $p->pet_owner_id;

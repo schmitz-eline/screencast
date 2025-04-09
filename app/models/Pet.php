@@ -5,14 +5,15 @@ namespace Animal\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class PetOwner extends Model
+class Pet extends Model
 {
-    protected $fillable = ['first_name', 'last_name', 'email', 'phone'];
+    protected $fillable = ['name', 'chip', 'gender', 'age', 'race', 'tatoo', 'description', 'photo_path'];
 
-    public function country():BelongsTo
+    public function pet_types(): BelongsTo
     {
-        return $this->belongsTo(Country::class);
+        return $this->belongsTo(PetType::class);
     }
 
     public function losses(): HasMany
