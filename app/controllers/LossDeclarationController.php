@@ -2,29 +2,26 @@
 
 namespace Animal\Controllers;
 
+use Animal\Models\Country;
+use Animal\Models\PetOwner;
+use Animal\Models\PetType;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use JetBrains\PhpStorm\NoReturn;
 use Tecgdcs\Response;
 use Tecgdcs\Validator;
 
 class LossDeclarationController
 {
-    private array $countries;
-    private array $pet_types;
-
-    public function __construct()
-    {
-        $this->countries = require CONFIG_DIR.'/countries.php';
-        $this->pet_types = require CONFIG_DIR.'/pet_types.php';
-    }
-
     public function create()
     {
-        $countries = $this->countries;
-        $pet_types = $this->pet_types;
+        $countries = Country::all();
+        $pet_types = PetType::all();
 
         require VIEW_DIR.'/lossdeclaration/create.php';
     }
 
-    public function store()
+    #[NoReturn]
+    public function store(): void
     {
         check_csrf_token();
 
@@ -38,16 +35,36 @@ class LossDeclarationController
             'country' => 'in_collection:countries',
         ]);
 
+        PetOwner::upsert(
+            [
+            [
+                'email' => $_REQUEST['email'],
+                'phone' => $_REQUEST['phone'],
+            ],
+        ],
+            uniqueBy: ['email'],
+            update: ['phone']
+        );
 
-        // Écrire les données dans la BD
+        $pet_owner = PetOwner::latest('updated_at')->first();
 
-        Response::redirect('/loss-declaration');
+        Response::redirect('/loss-declaration?id='.$pet_owner->id);
     }
 
     public function show()
     {
-        // Analyser la Query String pour savoir quelle déclaration afficher
-        $email = 'toto';
+        if (! isset($_GET['id']) || ! is_numeric($_GET['id'])) {
+            Response::abort(Response::BAD_REQUEST);
+        }
+        // Si vous êtes très très inquiet, mais le code avant fait les vérifications nécessaires
+        $id = (int) trim($_GET['id']);
+
+        try {
+            $pet_owner = PetOwner::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            Response::abort();
+        }
+        // Analyser la query string pour savoir quelle déclaration afficher
         require VIEW_DIR.'/lossdeclaration/show.php';
     }
 }
