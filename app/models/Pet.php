@@ -4,16 +4,26 @@ namespace Animal\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Pet extends Model
 {
-    protected $fillable = ['name', 'chip', 'gender', 'age', 'race', 'tatoo', 'description', 'photo_path'];
+    protected $fillable =
+        ['name', 'chip', 'tatoo', 'age', 'pet_type_id', 'race', 'gender', 'description', 'photo_path'];
 
-    public function pet_types(): BelongsTo
+    protected $casts = [
+        'tatoo' => 'array'
+    ];
+
+    public function pet_type(): BelongsTo
     {
         return $this->belongsTo(PetType::class);
+    }
+
+    public function pet_owners(): BelongsToMany
+    {
+        return $this->belongsToMany(PetOwner::class, 'losses');
     }
 
     public function losses(): HasMany

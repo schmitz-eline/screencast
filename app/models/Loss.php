@@ -3,25 +3,24 @@
 namespace Animal\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Loss extends Model
 {
-    protected $fillable = ['lost_at', 'postal_code'];
+    protected $fillable = ['lost_at', 'postal_code', 'country_id', 'pet_owner_id', 'pet_id'];
 
-    public function country(): HasOne
+    public function pet_owner(): BelongsTo
     {
-        return $this->hasOne(Country::class);
+        return $this->belongsTo(PetOwner::class);
     }
 
-    public function pet(): HasOne
+    public function pet(): BelongsTo
     {
-        return $this->hasOne(Pet::class);
+        return $this->belongsTo(Pet::class);
     }
 
-    public function pet_owners(): HasMany
+    public function country(): BelongsTo
     {
-        return $this->hasMany(PetOwner::class);
+        return $this->belongsTo(Country::class);
     }
 }

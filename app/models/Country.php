@@ -18,4 +18,5 @@ class Country extends Model
     {
         return $this->hasMany(Loss::class);
     }
+
 }
