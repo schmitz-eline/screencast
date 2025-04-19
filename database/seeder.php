@@ -11,8 +11,15 @@ use Animal\Models\Loss;
 use Animal\Models\Pet;
 use Animal\Models\PetOwner;
 use Animal\Models\PetType;
+use Animal\Models\User;
 
 $faker = Faker\Factory::create();
+
+User::query()->truncate();
+User::create([
+    'email' => 'eline.schmitz@student.hepl.be',
+    'password' => password_hash('change_this', PASSWORD_BCRYPT)
+]);
 
 $countries_csv = __DIR__.'/countries.csv';
 $file_handle = fopen($countries_csv, 'rb');
@@ -69,6 +76,8 @@ foreach ($pet_types as $code) {
 PetOwner::query()->truncate();
 $belgium = Country::where('code', 'BE')->first();
 $belgium->pet_owners()->create([
+    'first_name' => $faker->firstName(),
+    'last_name' => $faker->lastName(),
     'email' => 'dom@vil.be',
 ]);
 
