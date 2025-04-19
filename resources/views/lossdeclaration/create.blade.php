@@ -1,84 +1,67 @@
-@component('layouts.app',['title'=>$title])
-    <h1>{!! $page_header  !!}</h1>
+@component('layouts.app',compact('title'))
+    <h1>Déclaration de perte d'animal</h1>
     <form action="/loss-declaration"
           method="post">
-        @csrfToken()
+        <?php
+        csrf() ?>
         <fieldset>
             <legend>Vos coordonn&eacute;es</legend>
             <div class="fields">
                 <!-- First Name -->
-                @component('components.form.fields.input_text',['field_name' => 'first-name',
-                        'placeholder' => 'Jean'])
-                Pr&eacute;nom
+                @component('components.form.fields.input_text',
+[
+   'type' => 'text',
+   'field_name' => 'first-name',
+   'placeholder' => 'Jean'
+])
+                Prénom
                 @endcomponent
-
                 <!-- Last Name -->
-                @component('components.form.fields.input_text',['field_name' => 'last-name',
-                        'placeholder' => 'Valjean'])
+                @component('components.form.fields.input_text',
+[
+'type' => 'text',
+'field_name' => 'last-name',
+'placeholder' => 'Valjean'
+])
                 Nom
                 @endcomponent
-
                 <!-- Email field -->
-                @component('components.form.fields.input_text',['field_name' => 'email',
-                        'placeholder' => 'jean@valjean.fr', 'type'=>'email', 'required'=>true])
+                @component('components.form.fields.input_text',
+[
+'type' => 'email',
+'field_name' => 'email',
+'placeholder' => 'jean.valjean@miserables.fr',
+'required' => 'required'
+])
                     <abbr title="requis">*</abbr>&nbsp;Email
                 @endcomponent
-
-
                 <!-- Email verification -->
-                <div class="field">
-                    <label for="vemail"><abbr title="requis">*</abbr>&nbsp;V&eacute;rification de
-                                                                     l&rsquo;email</label>
-                    <input type="email"
-                           value="<?= $_SESSION['old']['vemail'] ?? '' ?>"
-                           name="vemail"
-                           id="vemail"
-                           required>
-                    <?php
-                    if (isset($_SESSION['errors']['vemail'])) : ?>
-                    <div class="error"><p><?= $_SESSION['errors']['vemail'] ?></p></div>
-                    <?php
-                    endif ?>
-
-                </div>
+                @component('components.form.fields.input_text',
+[
+'type' => 'email',
+'field_name' => 'vemail',
+'required' => 'required'
+])
+                    <abbr title="requis">*</abbr>&nbsp;Vérification de l’email
+                @endcomponent
                 <!-- Phone number -->
-                <div class="field">
-                    <label for="phone">T&eacute;l&eacute;phone</label>
-                    <input type="tel"
-                           value="<?= $_SESSION['old']['phone'] ?? '' ?>"
-                           name="phone"
-                           id="phone"
-                           placeholder="+32 (0)4 279 75 01">
-                    <?php
-                    if (isset($_SESSION['errors']['phone'])) : ?>
-                    <div class="error"><p><?= $_SESSION['errors']['phone'] ?></p></div>
-                    <?php
-                    endif ?>
-
-                </div>
+                @component('components.form.fields.input_text',
+[
+'type' => 'tel',
+'field_name' => 'phone',
+'placeholder' => '+32 (0)4 279 75 01',
+])
+                Numéro de téléphone
+                @endcomponent
                 <!-- Country -->
-                <div class="field">
-                    <label for="country">Pays</label>
-                    <select name="country"
-                            id="country">
-                        <?php
-                        foreach ($countries as $country) : ?>
-                        <option value="<?= $country->code ?>"
-                                <?php
-                                if (isset($_SESSION['old']['country']) && $country->code === $_SESSION['old']['country']) : ?>
-                                selected
-                            <?php
-                            endif ?>
-                        ><?= COUNTRIES[$country->code] ?></option>
-                        <?php
-                        endforeach ?>
-                    </select>
-                    <?php
-                    if (isset($_SESSION['errors']['country'])) : ?>
-                    <div class="error"><p><?= $_SESSION['errors']['country'] ?></p></div>
-                    <?php
-                    endif ?>
-                </div>
+                @component('components.form.fields.select',
+                [
+                    'field_name' => 'country',
+                    'collection' => $countries,
+                    'key' => 'code',
+                ])
+                Pays
+                @endcomponent
             </div>
         </fieldset>
 
@@ -304,30 +287,18 @@
                     endif ?>
                 </div>
                 <!-- Disparition Country -->
-                <div class="field">
-                    <label for="disparition-country">Pays</label>
-                    <select name="disparition-country"
-                            id="disparition-country">
-                        <?php
-                        foreach ($countries as $country) : ?>
-                        <option value="<?= $country->code ?>"
-                                <?php
-                                if (isset($_SESSION['old']['disparition-country']) && $country->code === $_SESSION['old']['disparition-country']) : ?>
-                                selected
-                            <?php
-                            endif ?>
-                        ><?= COUNTRIES[$country->code] ?></option>
-                        <?php
-                        endforeach; ?>
-                    </select>
-                    <?php
-                    if (isset($_SESSION['errors']['disparition-country'])) : ?>
-                    <div class="error"><p><?= $_SESSION['errors']['disparition-country'] ?></p></div>
-                    <?php
-                    endif ?>
-                </div>
+                @component('components.form.fields.select',
+                [
+                    'field_name' => 'disparition-country',
+                    'collection' => $countries,
+                    'key' => 'code',
+                ])
+                Pays
+                @endcomponent
             </div>
         </fieldset>
-        <button type="submit">D&eacute;clarer la perte de mon animal</button>
+        @component('components.form.buttons.normal')
+            D&eacute;clarer la perte de mon animal
+        @endcomponent
     </form>
 @endcomponent

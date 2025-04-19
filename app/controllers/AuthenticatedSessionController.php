@@ -9,34 +9,33 @@ use Tecgdcs\View;
 
 class AuthenticatedSessionController
 {
-    public function create(): void
+    public function create()
     {
-        View::make('auth.create');
+        View::make('auth.login');
     }
 
-    public function store(): void
+    public function store()
     {
+        check_csrf_token();
+
         Validator::check([
             'email' => 'required|email',
             'password' => 'required',
         ]);
-        $user = User::where('email', strtolower($_REQUEST['email']))->first();
-        if(!$user) {
-            $_SESSION['errors']['email'] = 'Cet email n’existe pas dans notre base de données !';
+
+        $user = User::where('email', $_REQUEST['email'])->first();
+        if (!$user) {
             $_SESSION['old']['email'] = $_REQUEST['email'];
+            $_SESSION['errors']['email'] = 'Cette adresse email n’existe pas dans notre base de données';
             Response::back();
         }
-        if(!password_verify($_REQUEST['password'], $user->password)) {
-            $_SESSION['errors']['password'] = 'Oups, le mot de passe ne correspond pas !';
+        if (!password_verify($_REQUEST['password'], $user->password)) {
             $_SESSION['old']['email'] = $_REQUEST['email'];
+            $_SESSION['errors']['password'] = 'Donnée d’authentification non correcte';
             Response::back();
         }
         $_SESSION = [];
         $_SESSION['user'] = $user;
-        /*
-         * Gérer l'authentification
-         * Mais si tout va bien alors...
-         */
         Response::redirect('/dashboard');
     }
 }

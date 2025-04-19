@@ -22,7 +22,7 @@ return [
         'action' => [Animal\Controllers\LossDeclarationController::class, 'show'],
     ],
     [
-        'uri' => '/login/create',
+        'uri' => '/login',
         'verb' => 'GET',
         'action' => [Animal\Controllers\AuthenticatedSessionController::class, 'create'],
     ],
@@ -30,12 +30,5 @@ return [
         'uri' => '/login',
         'verb' => 'POST',
         'action' => [Animal\Controllers\AuthenticatedSessionController::class, 'store'],
-        'middleware' => ['guest', 'csrf'],
-    ],
-    [
-        'uri' => '/dashboard',
-        'verb' => 'GET',
-        'action' => [Animal\Controllers\DashboardController::class, 'index'],
-        'middleware' => ['auth'],
     ],
 ];

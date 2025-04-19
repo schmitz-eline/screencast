@@ -17,13 +17,8 @@ class LossDeclarationController
     {
         $countries = Country::all();
         $pet_types = PetType::all();
-        $title = 'J’ai perdu mon animal';
-        $page_header = 'Déclaration de <i>perte d’animal</i>';
-       
-        View::make(
-            "lossdeclaration.create",
-            compact('countries', 'pet_types', 'title', 'page_header')
-        );
+        $title = "J’ai perdu mon animal";
+        View::make('lossdeclaration.create', compact('pet_types', 'countries', 'title'));
     }
 
     #[NoReturn]
@@ -38,7 +33,7 @@ class LossDeclarationController
             'email' => 'required|email',
             'vemail' => 'required|same:email',
             'phone' => 'phone',
-            'country' => 'in_collection:countries',
+            'country' => 'exists:countries,code',
         ]);
 
         PetOwner::upsert(
@@ -71,6 +66,6 @@ class LossDeclarationController
             Response::abort();
         }
         // Analyser la query string pour savoir quelle déclaration afficher
-        require VIEW_DIR.'/lossdeclaration/show.php';
+        View::make('lossdeclaration.show');
     }
 }
