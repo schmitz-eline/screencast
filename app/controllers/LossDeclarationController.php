@@ -3,6 +3,7 @@
 namespace Animal\Controllers;
 
 use Animal\Models\Country;
+use Animal\Models\Loss;
 use Animal\Models\PetOwner;
 use Animal\Models\PetType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -13,6 +14,14 @@ use Tecgdcs\View;
 
 class LossDeclarationController
 {
+    public function index(): void
+    {
+        $title = 'Dashboard';
+        $losses = Loss::all();
+
+        View::make('lossdeclaration.index', compact('title', 'losses'));
+    }
+
     public function create()
     {
         $countries = Country::all();
@@ -24,8 +33,6 @@ class LossDeclarationController
     #[NoReturn]
     public function store(): void
     {
-        check_csrf_token();
-
         $_SESSION['errors'] = null;
         $_SESSION['old'] = null;
 
@@ -53,11 +60,7 @@ class LossDeclarationController
 
     public function show(): void
     {
-        if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-            Response::abort(Response::BAD_REQUEST);
-        }
-        // Si vous êtes très très inquiet, mais le code avant fait les vérifications nécessaires
-        $id = (int) trim($_GET['id']);
+        $id = (int) trim($_REQUEST['id']);
 
         try {
             $pet_owner = PetOwner::findOrFail($id);

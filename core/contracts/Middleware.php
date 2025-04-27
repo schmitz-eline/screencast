@@ -4,5 +4,5 @@ namespace Tecgdcs\Contracts;
 
 interface Middleware
 {
-    public function handle();
+    public function handle(): void;
 }

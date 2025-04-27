@@ -10,13 +10,9 @@ class DashboardController
 {
     public function index(): void
     {
-        if (!isset($_SESSION['user'])) {
-            Response::abort(Response::UNAUTHORIZED);
-        }
-
-        $title = 'Dashboard';
+        $title = 'Les déclarations de perte';
         $losses = Loss::all();
 
-        View::make('dashboard.index', compact('title', 'losses'));
+        View::make('lossdeclaration.index', compact('title', 'losses'));
     }
 }

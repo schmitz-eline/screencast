@@ -16,8 +16,6 @@ class AuthenticatedSessionController
 
     public function store(): void
     {
-        check_csrf_token();
-
         Validator::check([
             'email' => 'required|email',
             'password' => 'required',
@@ -37,5 +35,12 @@ class AuthenticatedSessionController
         $_SESSION = [];
         $_SESSION['user'] = $user;
         Response::redirect('/dashboard');
+    }
+
+    public function destroy(): void
+    {
+        $_SESSION = [];
+        session_destroy();
+        Response::redirect('/');
     }
 }

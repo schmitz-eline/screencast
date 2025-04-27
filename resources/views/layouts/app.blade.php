@@ -31,6 +31,8 @@
               href="/css/main.css">
     </head>
     <body>
+        @component('layouts.navigation')
+        @endcomponent
         {!! $slot !!}
     </body>
 </html>

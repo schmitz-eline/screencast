@@ -1,9 +1,9 @@
-<h1>Identifiez-vous</h1>
-<p>Le faire vous donnera accès à votre dashboard pour administrer les déclarations de perte</p>
 @component('layouts.app',['title'=>'Identifiez-vous'])
+    <h1>Identifiez-vous</h1>
+    <p>Le faire vous donnera accès à votre dashboard pour administrer les déclarations de perte</p>
     <form action="/login"
           method="post">
-        @csrfToken()
+        {!! csrf_token() !!}
         <fieldset>
             <div class="fields">
                 @component('components.form.fields.input_text',
@@ -26,7 +26,7 @@
             </div>
         </fieldset>
         @component('components.form.buttons.normal')
-        Identifiez-moi&nbsp;!
+            Identifiez-moi&nbsp;!
         @endcomponent
     </form>
     <a href="/register">S’inscrire</a>
